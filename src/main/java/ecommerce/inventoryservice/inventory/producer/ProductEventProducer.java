@@ -2,7 +2,6 @@ package ecommerce.inventoryservice.inventory.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ecommerce.inventoryservice.inventory.domain.ProductEvent;
 import ecommerce.inventoryservice.inventory.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -3,6 +3,7 @@ package ecommerce.inventoryservice.inventory.producer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ecommerce.inventoryservice.inventory.domain.ProductEvent;
+import ecommerce.inventoryservice.inventory.model.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,9 +24,10 @@ public class ProductEventProducer {
     @Autowired
     ObjectMapper objectMapper;
 
-    public void sendProductEvent(ProductEvent productEvent) throws JsonProcessingException {
-        Integer key = productEvent.getProductEventId();
-        String value = objectMapper.writeValueAsString(productEvent);
+
+    public void sendProduct(Product product) throws JsonProcessingException {
+        Integer key = Math.toIntExact(product.getItemID());
+        String value = objectMapper.writeValueAsString(product);
 
         //Asynchronous call
         ListenableFuture<SendResult<Integer, String>> listenableFuture =  kafkaTemplate.sendDefault(key,value);
@@ -43,6 +45,8 @@ public class ProductEventProducer {
             }
         });
     }
+
+
 
     private void handleSuccess(Integer key, String value, SendResult<Integer, String> result) {
         log.info("Message sent successfully for the key : {}, value : {}, partition : {}", key, value, result.getRecordMetadata().partition());
